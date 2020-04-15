@@ -22,6 +22,7 @@ module Inspec::Resources
         its('interfaces') { should cmp ['enp0s3', 'eno2'] }
         its('sources') { should cmp ['ssh', 'icmp'] }
         its('services') { should cmp ['192.168.1.0/24', '192.168.1.2'] }
+        its('ports') { should cmp ['22/tcp', '8080/tcp'] }
       end
     EXAMPLE
 
@@ -32,6 +33,7 @@ module Inspec::Resources
       .register_column(:interfaces, field: "interfaces")
       .register_column(:sources,    field: "sources")
       .register_column(:services,   field: "services")
+      .register_column(:ports,      field: "ports")
 
     filter.install_filter_methods_on_resource(self, :params)
 
@@ -118,9 +120,16 @@ module Inspec::Resources
       {
         "zone" => zone,
         "interfaces" => line.split(":")[1].split(" "),
+        "ports" => ports_bound(zone),
         "services" => services_bound(zone),
         "sources" => sources_bound(zone),
       }
+    end
+
+    def ports_bound(query_zone)
+      # result: a list containing port/protocol
+      # example: ['22/tcp', '6789/udp']
+      firewalld_command("--zone=#{query_zone} --list-ports").split(" ")
     end
 
     def sources_bound(query_zone)

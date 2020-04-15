@@ -28,6 +28,11 @@ describe "Inspec::Resources::FirewallD" do
     _(entries.services).must_equal [%w{ssh icmp}]
   end
 
+  it "detects ports in an active zone" do
+    entries = cent_resource.where { zone == "public" }
+    _(entries.ports).must_equal [%w{22/tcp 7896/udp}]
+  end
+
   it "detects multiple active zones" do
     entries = cent_resource.where { zone == "public" }
     _(entries.interfaces).must_equal [%w{enp0s3 eno2}]

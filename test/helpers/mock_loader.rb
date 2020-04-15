@@ -483,6 +483,8 @@ class MockLoader
       "firewall-cmd --zone=default --list-services" => cmd.call("firewall-cmd-services-bound"),
       "firewall-cmd --zone=public --list-sources" => cmd.call("firewall-cmd-sources-bound"),
       "firewall-cmd --zone=default --list-sources" => cmd.call("firewall-cmd-sources-bound"),
+      "firewall-cmd --zone=public --list-ports" => cmd.call("firewall-cmd-ports-bound"),
+      "firewall-cmd --zone=default --list-ports" => cmd.call("firewall-cmd-ports-bound"),
       "firewall-cmd --zone=public --query-rich-rule=rule family=ipv4 source address=192.168.0.14 accept" => cmd.call("firewall-cmd-has-rule-enabled"),
       "sh -c 'type \"firewall-cmd\"'" => cmd.call("firewall-cmd"),
       "rpm -qia firewalld" => cmd.call("pkg-info-firewalld"),
